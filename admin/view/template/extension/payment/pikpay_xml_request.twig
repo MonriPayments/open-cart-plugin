@@ -1,0 +1,42 @@
+{{ header }}
+<div id="error-not-found" class="container">
+    <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+            <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+    </ul>
+    <div class="row">{{ column_left }}
+        {% if column_left and column_right %}
+            {% set class = 'col-sm-6' %}
+        {% elseif column_left or column_right %}
+            {% set class = 'col-sm-9' %}
+        {% else %}
+            {% set class = 'col-sm-12' %}
+        {% endif %}
+        <div id="content" class="{{ class }}">{{ content_top }}
+            <h2>PikPay response</h2>
+                <h4>{% if error %}
+                        <div class="alert alert-danger">
+                            <p><strong>Error!</strong></p>
+                            {{ error }}
+                        </div>
+                    {%  else %}
+                    <div class="alert alert-success">
+                        <p style="background: greenyellow; font-weight: bold; padding: 5px; font-size: 20px;">Success!</p>
+                        <p>{{ api_answer_order }}</p>
+                        <p>{{ api_answer_card }}</p>
+                        <p>{{ api_answer_amount }}</p>
+                        <p>{{ api_answer_transaction_type }}</p>
+                        <p>{{ api_answer_response_status }}</p>
+                        <p>{{ api_answer_response_message }}</p>
+                    </div>
+                    {% endif %}
+                </h4>
+            <div class="buttons clearfix">
+                <div class="pull-left"><a href="{{ link_orders_pikpay }}" class="btn btn-primary">{{ back_orders }}</a></div>
+            </div>
+            {{ content_bottom }}</div>
+        {{ column_right }}</div>
+</div>
+{{ footer }}
+
