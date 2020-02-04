@@ -1,18 +1,18 @@
 <?php
 
-class ControllerExtensionPaymentPikpay extends Controller
+class ControllerExtensionPaymentMonri extends Controller
 {
 
     public function index()
     {
         $data['button_confirm'] = $this->language->get('button_confirm');
-        return $this->load->view('extension/payment/pikpay', $data);
+        return $this->load->view('extension/payment/monri', $data);
     }
 
     public function form()
     {
         // All the necessary page elements
-        $this->load->language('extension/payment/pikpay');
+        $this->load->language('extension/payment/monri');
 
         $data['breadcrumbs'] = array();
 
@@ -26,7 +26,7 @@ class ControllerExtensionPaymentPikpay extends Controller
         );
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('text_form'),
-            'href' => $this->url->link('extension/payment/pikpay/form')
+            'href' => $this->url->link('extension/payment/monri/form')
         );
 
         $data['column_left'] = $this->load->controller('common/column_left');
@@ -36,23 +36,23 @@ class ControllerExtensionPaymentPikpay extends Controller
         $data['footer'] = $this->load->controller('common/footer');
         $data['header'] = $this->load->controller('common/header');
 
-        $data['test_mode']                = $this->config->get('payment_pikpay_test'); //Podaci iz administracije
-        $data['pikpay_key']               = $this->config->get('payment_pikpay_key');
-        $data['pikpay_secret_key']        = $this->config->get('payment_pikpay_secret_key');
-        $data['pikpay_processing_method'] = $this->config->get('payment_pikpay_processing_method');
-        $data['pikpay_processor']         = $this->config->get('payment_pikpay_processor');
-        $data['pikpay_language']          = $this->config->get('payment_pikpay_language');
-        $data['pikpay_transaction_type']  = $this->config->get('payment_pikpay_transaction_type');
+        $data['test_mode']                = $this->config->get('payment_monri_test'); //Podaci iz administracije
+        $data['monri_key']               = $this->config->get('payment_monri_key');
+        $data['monri_secret_key']        = $this->config->get('payment_monri_secret_key');
+        $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
+        $data['monri_processor']         = $this->config->get('payment_monri_processor');
+        $data['monri_language']          = $this->config->get('payment_monri_language');
+        $data['monri_transaction_type']  = $this->config->get('payment_monri_transaction_type');
 
         //Linkovi za formu
-        if($data['pikpay_processor'] == "pikpay")
+        if($data['monri_processor'] == "monri")
         {
             if($data['test_mode'])
             {
-                $data['liveurl'] = 'https://ipgtest.pikpay.ba/form';
+                $data['liveurl'] = 'https://ipgtest.monri.ba/form';
             }
             else{
-                $data['liveurl'] = 'https://ipg.pikpay.ba/form';
+                $data['liveurl'] = 'https://ipg.monri.ba/form';
             }
         }
         else{
@@ -80,16 +80,16 @@ class ControllerExtensionPaymentPikpay extends Controller
         $data["ch_phone"]     = $order_info["telephone"];
         $data["ch_email"]     = $order_info["email"];
         $data["currency"]     = $order_info["currency_code"];
-        $data["language"]     = $this->config->get('payment_pikpay_language');
-        $data["authenticity_token"] = $this->config->get('payment_pikpay_secret_key');
+        $data["language"]     = $this->config->get('payment_monri_language');
+        $data["authenticity_token"] = $this->config->get('payment_monri_secret_key');
         $data['order_description'] = $data["order_number"] . " - " . date('d.m.Y H:i');
 
-        $pikpay_key = $this->config->get('payment_pikpay_key');
-        if($data['pikpay_processor'] == "pikpay")
+        $monri_key = $this->config->get('payment_monri_key');
+        if($data['monri_processor'] == "monri")
         {
-            $data["digest"] = $this->digestV1($pikpay_key, $data["order_number"], $data['amount'], $data["currency"]);
+            $data["digest"] = $this->digestV1($monri_key, $data["order_number"], $data['amount'], $data["currency"]);
         }else{
-            $data["digest"] = $this->digestV2($pikpay_key, $data["order_number"], $data['amount'], $data["currency"]);
+            $data["digest"] = $this->digestV2($monri_key, $data["order_number"], $data['amount'], $data["currency"]);
         }
 
 
@@ -100,7 +100,7 @@ class ControllerExtensionPaymentPikpay extends Controller
         }
 
         // Load the template file and show output
-        $this->response->setOutput($this->load->view('extension/payment/pikpay_form_1', $data));
+        $this->response->setOutput($this->load->view('extension/payment/monri_form_1', $data));
     }
 
     /**
@@ -108,14 +108,14 @@ class ControllerExtensionPaymentPikpay extends Controller
      */
     public function success()
     {
-        $this->load->language('extension/payment/pikpay'); //File language
+        $this->load->language('extension/payment/monri'); //File language
         $this->load->model('checkout/order');
-        $data['pikpay_transaction_type']  = $this->config->get('payment_pikpay_transaction_type');
+        $data['monri_transaction_type']  = $this->config->get('payment_monri_transaction_type');
         $order_number = $_REQUEST['order_number'];
         $data['order_id'] = (int)$order_number;
 
-        $pikpay_key = $this->config->get('payment_pikpay_key');
-        $digest_pikpay = $_REQUEST['digest'];
+        $monri_key = $this->config->get('payment_monri_key');
+        $digest_monri = $_REQUEST['digest'];
 
 
         if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
@@ -141,20 +141,20 @@ class ControllerExtensionPaymentPikpay extends Controller
 
         }
 
-        $data['pikpay_processor'] = $this->config->get('payment_pikpay_processor');
+        $data['monri_processor'] = $this->config->get('payment_monri_processor');
 
-        if($data['pikpay_processor'] == "pikpay")
+        if($data['monri_processor'] == "monri")
         {
-            $digest_shop   = $this->digestUpdateV1($pikpay_key, $order_number);
+            $digest_shop   = $this->digestUpdateV1($monri_key, $order_number);
         }else{
 
-            $digest_shop   = $this->digestUpdateV2($pikpay_key, $get_data);
+            $digest_shop   = $this->digestUpdateV2($monri_key, $get_data);
         }
 
 
-        if($digest_shop == $digest_pikpay)
+        if($digest_shop == $digest_monri)
         {
-            if($data['pikpay_transaction_type'] == 'authorize')
+            if($data['monri_transaction_type'] == 'authorize')
             {
                 $data['order_status'] = 1; //Status pending
             }else{
@@ -177,7 +177,7 @@ class ControllerExtensionPaymentPikpay extends Controller
      */
     public function fail()
     {
-        $this->load->language('extension/payment/pikpay'); //File language
+        $this->load->language('extension/payment/monri'); //File language
         $this->load->model('checkout/order');
         $order_id1 = $_REQUEST['order_number'];
         $data['order_id'] = (int)$order_id1;
@@ -192,7 +192,7 @@ class ControllerExtensionPaymentPikpay extends Controller
             'href' => $this->url->link('common/home')
         );
 
-        //https://payment.demo.ba/opencart/opencart_test_pikpay1/extension/payment/pikpay/fail?language=hr&order_number=14vz_test
+        //https://payment.demo.ba/opencart/opencart_test_monri1/extension/payment/monri/fail?language=hr&order_number=14vz_test
 
         $data['heading_title'] = $this->language->get('heading_title_fail');
         $data['text_message'] = $this->language->get('text_message_fail');
@@ -207,7 +207,7 @@ class ControllerExtensionPaymentPikpay extends Controller
         /**
          * Set custom output
          */
-        $this->response->setOutput($this->load->view('common/pikpay_cancel_message', $data));
+        $this->response->setOutput($this->load->view('common/monri_cancel_message', $data));
     }
 
 

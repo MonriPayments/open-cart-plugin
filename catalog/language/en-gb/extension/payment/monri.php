@@ -1,6 +1,6 @@
 <?php
 // Text
-$_['text_title']           = 'PikPay Payment';
+$_['text_title']           = 'Monri Payment';
 $_['text_home']            = '<i class="fa fa-home"></i>';
 $_['button_confirm']       = 'Success order';
 $_['heading_title_fail']   = 'You have canceled the payment of your order.';
