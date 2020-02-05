@@ -249,7 +249,7 @@ class ControllerExtensionPaymentMonri extends Controller {
             $data['error']= "Message: " . $sendData;
         }
 
-        $data['link_orders_monri'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'], true);
+        $data['link_orders_monri'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'], true);
 
         // Load the template file and show output
         $this->response->setOutput($this->load->view('extension/payment/monri_xml_request', $data));

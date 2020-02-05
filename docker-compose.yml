@@ -7,7 +7,7 @@ services:
       - MARIADB_DATABASE=bitnami_opencart
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - '/Users/jasminsuljic/developing/monri/docker-data/open-cart/mariadb-persistence:/bitnami'
+      - 'mariadb_data:/bitnami'
   opencart:
     image: 'bitnami/opencart:3'
     environment:
@@ -21,7 +21,14 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - '/Users/jasminsuljic/developing/monri/docker-data/open-cart/opencart-persistence:/bitnami'
+      - './admin/controller/extension/payment:/opt/bitnami/opencart/admin/controller/extension/payment'
+      - './admin/language/en-gb/extension/payment:/opt/bitnami/opencart/admin/language/en-gb/extension/payment'
+      - './admin/view/image/payment:/opt/bitnami/opencart/admin/view/image/payment'
+      - './admin/view/template/extension/payment:/opt/bitnami/opencard/admin/view/template/extension/payment'
+      - './catalog/controller/extension/payment:/opt/bitnami/opencart/catalog/controller/extension/payment'
+      - './catalog/language/en-gb/extension/payment:/opt/bitnami/opencart/catalog/language/en-gb/extension/payment'
+      - './catalog/model/extension/payment:/opt/bitnami/opencart/catalog/model/extension/payment'
+      - './catalog/view/theme/default/template/extension/payment:/opt/bitnami/opencart/catalog/view/theme/default/template/extension/payment'
     depends_on:
       - mariadb
 volumes:

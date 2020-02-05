@@ -5,7 +5,7 @@ class ControllerSaleOrderMonri extends Controller {
 
 	public function index() {
         $this->load->language('sale/order');
-        $this->load->language('sale/order_monri');
+        $this->load->language('payment/order_monri');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -84,7 +84,7 @@ class ControllerSaleOrderMonri extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$this->response->redirect($this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)); // Izmjena linka
+		$this->response->redirect($this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)); // Izmjena linka
 	}
 			
 	protected function getList() {
@@ -199,13 +199,13 @@ class ControllerSaleOrderMonri extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
+			'href' => $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
 		);
 
-		$data['invoice'] = $this->url->link('sale/order_monri/invoice', 'user_token=' . $this->session->data['user_token'], true);
-		$data['shipping'] = $this->url->link('sale/order_monri/shipping', 'user_token=' . $this->session->data['user_token'], true);
-		$data['add'] = $this->url->link('sale/order_monri/add', 'user_token=' . $this->session->data['user_token'] . $url, true);
-		$data['delete'] = str_replace('&amp;', '&', $this->url->link('sale/order_monri/delete', 'user_token=' . $this->session->data['user_token'] . $url, true));
+		$data['invoice'] = $this->url->link('payment/order_monri/invoice', 'user_token=' . $this->session->data['user_token'], true);
+		$data['shipping'] = $this->url->link('payment/order_monri/shipping', 'user_token=' . $this->session->data['user_token'], true);
+		$data['add'] = $this->url->link('payment/order_monri/add', 'user_token=' . $this->session->data['user_token'] . $url, true);
+		$data['delete'] = str_replace('&amp;', '&', $this->url->link('payment/order_monri/delete', 'user_token=' . $this->session->data['user_token'] . $url, true));
 
 		$data['orders'] = array();
 
@@ -242,8 +242,8 @@ class ControllerSaleOrderMonri extends Controller {
                 'void'          => $this->url->link('extension/payment/monri/apiRequest', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url . "&type=void", true), //my code controller refund
                 'refund'        => $this->url->link('extension/payment/monri/apiRequest', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url . "&type=refund",true), //my code controller refund
                 'payment'       => $order_info["payment_method"],
-                'view'          => $this->url->link('sale/order_monri/info', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true), // Izmjena linka
-				'edit'          => $this->url->link('sale/order_monri/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true) // Izmjena linka
+                'view'          => $this->url->link('payment/order_monri/info', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true), // Izmjena linka
+				'edit'          => $this->url->link('payment/order_monri/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true) // Izmjena linka
 			);
 		}
 
@@ -309,12 +309,12 @@ class ControllerSaleOrderMonri extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['sort_order'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.order_id' . $url, true);
-		$data['sort_customer'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=customer' . $url, true);
-		$data['sort_status'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=order_status' . $url, true);
-		$data['sort_total'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.total' . $url, true);
-		$data['sort_date_added'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_added' . $url, true);
-		$data['sort_date_modified'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_modified' . $url, true);
+		$data['sort_order'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.order_id' . $url, true);
+		$data['sort_customer'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=customer' . $url, true);
+		$data['sort_status'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=order_status' . $url, true);
+		$data['sort_total'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.total' . $url, true);
+		$data['sort_date_added'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_added' . $url, true);
+		$data['sort_date_modified'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_modified' . $url, true);
 
 		$url = '';
 
@@ -358,7 +358,7 @@ class ControllerSaleOrderMonri extends Controller {
 		$pagination->total = $order_total;
 		$pagination->page = $page;
 		$pagination->limit = $this->config->get('config_limit_admin');
-		$pagination->url = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url . '&page={page}', true);
+		$pagination->url = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . $url . '&page={page}', true);
 
 		$data['pagination'] = $pagination->render();
 
@@ -387,7 +387,7 @@ class ControllerSaleOrderMonri extends Controller {
 
 		$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
 
-		if ($api_info && $this->user->hasPermission('modify', 'sale/order_monri')) {
+		if ($api_info && $this->user->hasPermission('modify', 'payment/order_monri')) {
 			$session = new Session($this->config->get('session_engine'), $this->registry);
 			
 			$session->start();
@@ -407,7 +407,7 @@ class ControllerSaleOrderMonri extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('sale/order_list_monri', $data));
+		$this->response->setOutput($this->load->view('payment/order_list_monri', $data));
 	}
 		
 	public function getForm() {
@@ -464,10 +464,10 @@ class ControllerSaleOrderMonri extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
+			'href' => $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
 		);
 
-		$data['cancel'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true);
+		$data['cancel'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true);
 
 		$data['user_token'] = $this->session->data['user_token'];
 
@@ -694,7 +694,7 @@ class ControllerSaleOrderMonri extends Controller {
 
 		$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
 
-		if ($api_info && $this->user->hasPermission('modify', 'sale/order_monri')) {
+		if ($api_info && $this->user->hasPermission('modify', 'payment/order_monri')) {
 			$session = new Session($this->config->get('session_engine'), $this->registry);
 			
 			$session->start();
@@ -787,13 +787,13 @@ class ControllerSaleOrderMonri extends Controller {
 
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('heading_title'),
-				'href' => $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
+				'href' => $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
 			);
 
-			$data['shipping'] = $this->url->link('sale/order_monri/shipping', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
-			$data['invoice'] = $this->url->link('sale/order_monri/invoice', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
-			$data['edit'] = $this->url->link('sale/order_monri/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
-			$data['cancel'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true);
+			$data['shipping'] = $this->url->link('payment/order_monri/shipping', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
+			$data['invoice'] = $this->url->link('payment/order_monri/invoice', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
+			$data['edit'] = $this->url->link('payment/order_monri/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
+			$data['cancel'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true);
 
 			$data['user_token'] = $this->session->data['user_token'];
 
