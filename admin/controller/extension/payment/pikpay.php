@@ -1,16 +1,19 @@
 <?php
-class ControllerExtensionPaymentMonri extends Controller {
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+class ControllerExtensionPaymentPikpay extends Controller {
     private $error = array();
 
     public function index() {
-        $this->load->language('extension/payment/monri');
+        $this->load->language('extension/payment/pikpay');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
         $this->load->model('setting/setting');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-            $this->model_setting_setting->editSetting('payment_monri', $this->request->post);
+            $this->model_setting_setting->editSetting('payment_pikpay', $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
@@ -39,46 +42,46 @@ class ControllerExtensionPaymentMonri extends Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('extension/payment/monri', 'user_token=' . $this->session->data['user_token'], true)
+            'href' => $this->url->link('extension/payment/pikpay', 'user_token=' . $this->session->data['user_token'], true)
         );
 
-        $data['action'] = $this->url->link('extension/payment/monri', 'user_token=' . $this->session->data['user_token'], true);
+        $data['action'] = $this->url->link('extension/payment/pikpay', 'user_token=' . $this->session->data['user_token'], true);
 
         $data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true);
 
         // Test
-        if (isset($this->request->post['payment_monri_test'])) {
-            $data['payment_monri_test'] = $this->request->post['payment_monri_test'];
+        if (isset($this->request->post['payment_pikpay_test'])) {
+            $data['payment_pikpay_test'] = $this->request->post['payment_pikpay_test'];
         } else {
-            $data['payment_monri_test'] = $this->config->get('payment_monri_test');
+            $data['payment_pikpay_test'] = $this->config->get('payment_pikpay_test');
         }
 
         // Status
-        if (isset($this->request->post['payment_monri_status'])) {
-            $data['payment_monri_status'] = $this->request->post['payment_monri_status'];
+        if (isset($this->request->post['payment_pikpay_status'])) {
+            $data['payment_pikpay_status'] = $this->request->post['payment_pikpay_status'];
         } else {
-            $data['payment_monri_status'] = $this->config->get('payment_monri_status');
+            $data['payment_pikpay_status'] = $this->config->get('payment_pikpay_status');
         }
 
-        // Monri Key
-        if (isset($this->request->post['payment_monri_key'])) {
-            $data['payment_monri_key'] = $this->request->post['payment_monri_key'];
+        // PikPay Key
+        if (isset($this->request->post['payment_pikpay_key'])) {
+            $data['payment_pikpay_key'] = $this->request->post['payment_pikpay_key'];
         } else {
-            $data['payment_monri_key'] = $this->config->get('payment_monri_key');
+            $data['payment_pikpay_key'] = $this->config->get('payment_pikpay_key');
         }
 
-        // Error poruka monri key
-        if (isset($this->error['payment_monri_key'])) {
-            $data['error_payment_monri_key'] = $this->error['payment_monri_key'];
+        // Error poruka pikpay key
+        if (isset($this->error['payment_pikpay_key'])) {
+            $data['error_payment_pikpay_key'] = $this->error['payment_pikpay_key'];
         } else {
-            $data['error_payment_monri_key'] = '';
+            $data['error_payment_pikpay_key'] = '';
         }
 
-        // Monri secret key
-        if (isset($this->request->post['payment_monri_secret_key'])) {
-            $data['payment_monri_secret_key'] = $this->request->post['payment_monri_secret_key'];
+        // PikPay secret key
+        if (isset($this->request->post['payment_pikpay_secret_key'])) {
+            $data['payment_pikpay_secret_key'] = $this->request->post['payment_pikpay_secret_key'];
         } else {
-            $data['payment_monri_secret_key'] = $this->config->get('payment_monri_secret_key');
+            $data['payment_pikpay_secret_key'] = $this->config->get('payment_pikpay_secret_key');
         }
 
         // Error poruka secret key
@@ -88,25 +91,25 @@ class ControllerExtensionPaymentMonri extends Controller {
             $data['error_secret_key'] = '';
         }
 
-        // Monri payment processor
-        if (isset($this->request->post['payment_monri_processor'])) {
-            $data['payment_monri_processor'] = $this->request->post['payment_monri_processor'];
+        // PikPay payment processor
+        if (isset($this->request->post['payment_pikpay_processor'])) {
+            $data['payment_pikpay_processor'] = $this->request->post['payment_pikpay_processor'];
         } else {
-            $data['payment_monri_processor'] = $this->config->get('payment_monri_processor');
+            $data['payment_pikpay_processor'] = $this->config->get('payment_pikpay_processor');
         }
 
-        // Monri transaction type
-        if (isset($this->request->post['payment_monri_transaction_type'])) {
-            $data['payment_monri_transaction_type'] = $this->request->post['payment_monri_transaction_type'];
+        // PikPay transaction type
+        if (isset($this->request->post['payment_pikpay_transaction_type'])) {
+            $data['payment_pikpay_transaction_type'] = $this->request->post['payment_pikpay_transaction_type'];
         } else {
-            $data['payment_monri_transaction_type'] = $this->config->get('payment_monri_transaction_type');
+            $data['payment_pikpay_transaction_type'] = $this->config->get('payment_pikpay_transaction_type');
         }
 
         // Odabir jezika
-        if (isset($this->request->post['payment_monri_language'])) {
-            $data['payment_monri_language'] = $this->request->post['payment_monri_language'];
+        if (isset($this->request->post['payment_pikpay_language'])) {
+            $data['payment_pikpay_language'] = $this->request->post['payment_pikpay_language'];
         } else {
-            $data['payment_monri_language'] = $this->config->get('payment_monri_language');
+            $data['payment_pikpay_language'] = $this->config->get('payment_pikpay_language');
         }
 
         //
@@ -118,29 +121,29 @@ class ControllerExtensionPaymentMonri extends Controller {
             $protocol = 'http://';
         }
 
-        $data['success_url'] = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI'])))) . "/extension/payment/monri/success"; //$protocol . $domain_name;
-        $data['fail_url']    = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI'])))) . "/extension/payment/monri/fail"; //$protocol . $domain_name;
+        $data['success_url'] = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI'])))) . "/extension/payment/pikpay/success"; //$protocol . $domain_name;
+        $data['fail_url']    = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI'])))) . "/extension/payment/pikpay/fail"; //$protocol . $domain_name;
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('extension/payment/monri', $data));
+        $this->response->setOutput($this->load->view('extension/payment/pikpay', $data));
     }
 
     // Validacija polja
     protected function validate() {
-        if (!$this->user->hasPermission('modify', 'extension/payment/monri')) {
+        if (!$this->user->hasPermission('modify', 'extension/payment/pikpay')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
-        // Monri Key
-        if (!$this->request->post['payment_monri_key']) {
-            $this->error['payment_monri_key'] = $this->language->get('error_payment_monri_key');
+        // PikPay Key
+        if (!$this->request->post['payment_pikpay_key']) {
+            $this->error['payment_pikpay_key'] = $this->language->get('error_payment_pikpay_key');
         }
 
-        // Monri secret key
-        if (!$this->request->post['payment_monri_secret_key']) {
+        // PikPay secret key
+        if (!$this->request->post['payment_pikpay_secret_key']) {
             $this->error['secret_key'] = $this->language->get('error_secret_key');
         }
 
@@ -150,7 +153,7 @@ class ControllerExtensionPaymentMonri extends Controller {
     public function apiRequest()
     {
         // All the necessary page elements
-        $this->load->language('extension/payment/monri');
+        $this->load->language('extension/payment/pikpay');
 
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['column_right'] = $this->load->controller('common/column_right');
@@ -159,21 +162,21 @@ class ControllerExtensionPaymentMonri extends Controller {
         $data['footer'] = $this->load->controller('common/footer');
         $data['header'] = $this->load->controller('common/header');
 
-        $data['test_mode']                = $this->config->get('payment_monri_test'); //Podaci iz administracije
-        $data['monri_key']               = $this->config->get('payment_monri_key');
-        $data['monri_secret_key']        = $this->config->get('payment_monri_secret_key');
-        $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
-        $data['monri_processor']         = $this->config->get('payment_monri_processor');
+        $data['test_mode']                = $this->config->get('payment_pikpay_test'); //Podaci iz administracije
+        $data['pikpay_key']               = $this->config->get('payment_pikpay_key');
+        $data['pikpay_secret_key']        = $this->config->get('payment_pikpay_secret_key');
+        $data['pikpay_processing_method'] = $this->config->get('payment_pikpay_processing_method');
+        $data['pikpay_processor']         = $this->config->get('payment_pikpay_processor');
 
         //Linkovi za formu
-        if($data['monri_processor'] == "monri")
+        if($data['pikpay_processor'] == "pikpay")
         {
             if($data['test_mode'])
             {
-                $data['liveurl'] = 'https://ipgtest.monri.ba/transactions/';
+                $data['liveurl'] = 'https://ipgtest.monri.com/transactions/';
             }
             else{
-                $data['liveurl'] = 'https://ipg.monri.ba/transactions/';
+                $data['liveurl'] = 'https://ipg.monri.com/transactions/';
             }
         }
         else{
@@ -192,10 +195,10 @@ class ControllerExtensionPaymentMonri extends Controller {
         $data["order_number"] = $this->request->get['order_id'];
         $data["amount"]       = $order_info["total"]*100;
         $data["currency"]     = $order_info["currency_code"];
-        $data["authenticity_token"] = $this->config->get('payment_monri_secret_key');
+        $data["authenticity_token"] = $this->config->get('payment_pikpay_secret_key');
 
-        $monri_key = $this->config->get('payment_monri_key');
-        $data["digest"] = $this->digest($monri_key, $data["order_number"], $data['amount'], $data["currency"]);
+        $pikpay_key = $this->config->get('payment_pikpay_key');
+        $data["digest"] = $this->digest($pikpay_key, $data["order_number"], $data['amount'], $data["currency"]);
 
         $xml = $this->generateXml($data);
         $type = $_REQUEST['type'];
@@ -249,10 +252,10 @@ class ControllerExtensionPaymentMonri extends Controller {
             $data['error']= "Message: " . $sendData;
         }
 
-        $data['link_orders_monri'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'], true);
+        $data['link_orders_pikpay'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'], true);
 
         // Load the template file and show output
-        $this->response->setOutput($this->load->view('extension/payment/monri_xml_request', $data));
+        $this->response->setOutput($this->load->view('extension/payment/pikpay_xml_request', $data));
     }
 
     // Računanje digesta za slanje podataka

@@ -32,7 +32,7 @@ $_['payment_monri_transaction_purchase']  = 'Purchase';
 $_['payment_monri_transaction_authorize'] = 'Authorize';
 
 // Vreijednosti polja processor
-$_['payment_monri_processor_hr']  = 'webteh.hr';
+$_['payment_monri_processor_hr']  = 'monri.com';
 $_['payment_monri_processor_ba']  = 'monri.ba';
 
 // Palceholder
