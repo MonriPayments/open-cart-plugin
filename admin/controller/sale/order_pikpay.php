@@ -1,11 +1,11 @@
 <?php
 
-class ControllerSaleOrderPikpay extends Controller {
+class ControllerSaleOrderMonri extends Controller {
 	private $error = array();
 
-	public function index() {
+    public function index() {
         $this->load->language('sale/order');
-        $this->load->language('sale/order_pikpay');
+        $this->load->language('sale/order_monri');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
@@ -23,6 +23,16 @@ class ControllerSaleOrderPikpay extends Controller {
 
 		$this->getForm();
 	}
+
+    public function install()
+    {
+        die('xasdf1234');
+    }
+
+    public function uninstall()
+    {
+        die('asdf1234');
+    }
 
 	public function edit() {
 		$this->load->language('sale/order');
@@ -84,7 +94,7 @@ class ControllerSaleOrderPikpay extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$this->response->redirect($this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . $url, true)); // Izmjena linka
+		$this->response->redirect($this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)); // Izmjena linka
 	}
 			
 	protected function getList() {
@@ -199,13 +209,13 @@ class ControllerSaleOrderPikpay extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . $url, true)
+			'href' => $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
 		);
 
-		$data['invoice'] = $this->url->link('sale/order_pikpay/invoice', 'user_token=' . $this->session->data['user_token'], true);
-		$data['shipping'] = $this->url->link('sale/order_pikpay/shipping', 'user_token=' . $this->session->data['user_token'], true);
-		$data['add'] = $this->url->link('sale/order_pikpay/add', 'user_token=' . $this->session->data['user_token'] . $url, true);
-		$data['delete'] = str_replace('&amp;', '&', $this->url->link('sale/order_pikpay/delete', 'user_token=' . $this->session->data['user_token'] . $url, true));
+		$data['invoice'] = $this->url->link('sale/order_monri/invoice', 'user_token=' . $this->session->data['user_token'], true);
+		$data['shipping'] = $this->url->link('sale/order_monri/shipping', 'user_token=' . $this->session->data['user_token'], true);
+		$data['add'] = $this->url->link('sale/order_monri/add', 'user_token=' . $this->session->data['user_token'] . $url, true);
+		$data['delete'] = str_replace('&amp;', '&', $this->url->link('sale/order_monri/delete', 'user_token=' . $this->session->data['user_token'] . $url, true));
 
 		$data['orders'] = array();
 
@@ -238,12 +248,12 @@ class ControllerSaleOrderPikpay extends Controller {
 				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
 				'date_modified' => date($this->language->get('date_format_short'), strtotime($result['date_modified'])),
 				'shipping_code' => $result['shipping_code'],
-                'confirm'       => $this->url->link('extension/payment/pikpay/apiRequest', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url. "&type=capture", true), //my code controler confirm
-                'void'          => $this->url->link('extension/payment/pikpay/apiRequest', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url . "&type=void", true), //my code controller refund
-                'refund'        => $this->url->link('extension/payment/pikpay/apiRequest', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url . "&type=refund",true), //my code controller refund
+                'confirm'       => $this->url->link('extension/payment/monri/apiRequest', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url. "&type=capture", true), //my code controler confirm
+                'void'          => $this->url->link('extension/payment/monri/apiRequest', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url . "&type=void", true), //my code controller refund
+                'refund'        => $this->url->link('extension/payment/monri/apiRequest', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url . "&type=refund",true), //my code controller refund
                 'payment'       => $order_info["payment_method"],
-                'view'          => $this->url->link('sale/order_pikpay/info', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true), // Izmjena linka
-				'edit'          => $this->url->link('sale/order_pikpay/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true) // Izmjena linka
+                'view'          => $this->url->link('sale/order_monri/info', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true), // Izmjena linka
+				'edit'          => $this->url->link('sale/order_monri/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true) // Izmjena linka
 			);
 		}
 
@@ -309,12 +319,12 @@ class ControllerSaleOrderPikpay extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['sort_order'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . '&sort=o.order_id' . $url, true);
-		$data['sort_customer'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . '&sort=customer' . $url, true);
-		$data['sort_status'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . '&sort=order_status' . $url, true);
-		$data['sort_total'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . '&sort=o.total' . $url, true);
-		$data['sort_date_added'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_added' . $url, true);
-		$data['sort_date_modified'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_modified' . $url, true);
+		$data['sort_order'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.order_id' . $url, true);
+		$data['sort_customer'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=customer' . $url, true);
+		$data['sort_status'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=order_status' . $url, true);
+		$data['sort_total'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.total' . $url, true);
+		$data['sort_date_added'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_added' . $url, true);
+		$data['sort_date_modified'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_modified' . $url, true);
 
 		$url = '';
 
@@ -358,7 +368,7 @@ class ControllerSaleOrderPikpay extends Controller {
 		$pagination->total = $order_total;
 		$pagination->page = $page;
 		$pagination->limit = $this->config->get('config_limit_admin');
-		$pagination->url = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . $url . '&page={page}', true);
+		$pagination->url = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url . '&page={page}', true);
 
 		$data['pagination'] = $pagination->render();
 
@@ -387,12 +397,12 @@ class ControllerSaleOrderPikpay extends Controller {
 
 		$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
 
-		if ($api_info && $this->user->hasPermission('modify', 'sale/order_pikpay')) {
+		if ($api_info && $this->user->hasPermission('modify', 'sale/order_monri')) {
 			$session = new Session($this->config->get('session_engine'), $this->registry);
 			
 			$session->start();
 					
-			$this->model_user_api->deleteApiSessionBySessonId($session->getId());
+			$this->model_user_api->deleteApiSessionBySessionId($session->getId());
 			
 			$this->model_user_api->addApiSession($api_info['api_id'], $session->getId(), $this->request->server['REMOTE_ADDR']);
 			
@@ -407,7 +417,7 @@ class ControllerSaleOrderPikpay extends Controller {
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 
-		$this->response->setOutput($this->load->view('sale/order_list_pikpay', $data));
+		$this->response->setOutput($this->load->view('sale/order_list_monri', $data));
 	}
 		
 	public function getForm() {
@@ -464,10 +474,10 @@ class ControllerSaleOrderPikpay extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . $url, true)
+			'href' => $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
 		);
 
-		$data['cancel'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . $url, true);
+		$data['cancel'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true);
 
 		$data['user_token'] = $this->session->data['user_token'];
 
@@ -694,12 +704,12 @@ class ControllerSaleOrderPikpay extends Controller {
 
 		$api_info = $this->model_user_api->getApi($this->config->get('config_api_id'));
 
-		if ($api_info && $this->user->hasPermission('modify', 'sale/order_pikpay')) {
+		if ($api_info && $this->user->hasPermission('modify', 'sale/order_monri')) {
 			$session = new Session($this->config->get('session_engine'), $this->registry);
 			
 			$session->start();
 					
-			$this->model_user_api->deleteApiSessionBySessonId($session->getId());
+			$this->model_user_api->deleteApiSessionBySessionId($session->getId());
 			
 			$this->model_user_api->addApiSession($api_info['api_id'], $session->getId(), $this->request->server['REMOTE_ADDR']);
 			
@@ -787,13 +797,13 @@ class ControllerSaleOrderPikpay extends Controller {
 
 			$data['breadcrumbs'][] = array(
 				'text' => $this->language->get('heading_title'),
-				'href' => $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . $url, true)
+				'href' => $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true)
 			);
 
-			$data['shipping'] = $this->url->link('sale/order_pikpay/shipping', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
-			$data['invoice'] = $this->url->link('sale/order_pikpay/invoice', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
-			$data['edit'] = $this->url->link('sale/order_pikpay/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
-			$data['cancel'] = $this->url->link('sale/order_pikpay', 'user_token=' . $this->session->data['user_token'] . $url, true);
+			$data['shipping'] = $this->url->link('sale/order_monri/shipping', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
+			$data['invoice'] = $this->url->link('sale/order_monri/invoice', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
+			$data['edit'] = $this->url->link('sale/order_monri/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . (int)$this->request->get['order_id'], true);
+			$data['cancel'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'] . $url, true);
 
 			$data['user_token'] = $this->session->data['user_token'];
 
@@ -1242,7 +1252,7 @@ class ControllerSaleOrderPikpay extends Controller {
 				
 				$session->start();
 				
-				$this->model_user_api->deleteApiSessionBySessonId($session->getId());
+				$this->model_user_api->deleteApiSessionBySessionId($session->getId());
 				
 				$this->model_user_api->addApiSession($api_info['api_id'], $session->getId(), $this->request->server['REMOTE_ADDR']);
 				

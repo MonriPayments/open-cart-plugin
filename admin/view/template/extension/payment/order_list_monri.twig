@@ -132,16 +132,16 @@
                   <td class="text-right">{{ order.total }}</td>
                   <td class="text-left">{{ order.date_added }}</td>
                   <td class="text-left">{{ order.date_modified }}</td>
-                    {% if order.payment == "PikPay Payment" %}
+                    {% if order.payment == "Monri Payment" %}
 
                         <td class="text-right"><div style="min-width: 120px;">
-                                <img src="view/image/payment/pikpay.png" style="float: left;" alt="PikPay payment">
+                                <img src="view/image/payment/monri.png" style="float: left;" alt="Monri payment">
                     {% else %}
                         <td class="text-right"><div style="min-width: 120px;">
                     {% endif %}
 
                             <div class="btn-group">
-                                {% if order.payment == "PikPay Payment" %}
+                                {% if order.payment == "Monri Payment" %}
 
                                     {% if order.order_status == "Pending" %}
                                         <div data-value="{{ order.confirm }}" data-action="confirm" class="btn btn-success action">{{ button_confirm }}</div>
@@ -245,7 +245,7 @@ $('#button-filter').on('click', function() {
 		url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
 	}
 
-	location = 'index.php?route=sale/order_pikpay&user_token={{ user_token }}' + url;
+	location = 'index.php?route=sale/order_monri&user_token={{ user_token }}' + url;
 });
 //--></script>
   <script type="text/javascript"><!--

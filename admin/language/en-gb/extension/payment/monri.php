@@ -15,7 +15,7 @@ $_['back_orders']		         = 'Orders';
 // Polja administracije
 $_['entry_test']		         = 'Test Mode';
 $_['entry_status']		         = 'Status';
-$_['entry_profile_id']		     = 'Monri/Webteh key';
+$_['entry_profile_id']		     = 'Monri key';
 $_['entry_secret_key']		     = 'Authenticity token';
 $_['entry_processing_method']    = 'Processing method';
 $_['entry_payment_processor']    = 'Payment processor';
@@ -33,14 +33,14 @@ $_['payment_monri_transaction_authorize'] = 'Authorize';
 
 // Vreijednosti polja processor
 $_['payment_monri_processor_hr']  = 'monri.com';
-$_['payment_monri_processor_ba']  = 'monri.ba';
+$_['payment_monri_processor_ba']  = 'monri.com';
 
 // Palceholder
 $_['payment_monri_palceholder_key']        = 'Set Key';
 $_['payment_monri_palceholder_secret_key'] = 'Set Secret Key';
 
 // Help
-$_['help_monri_key']        = 'Set Monri/Webteh key';
+$_['help_monri_key']        = 'Set Monri key';
 $_['help_monri_secret_key'] = 'Set Authenticity token';
 
 // Error
