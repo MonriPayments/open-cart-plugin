@@ -60,14 +60,14 @@ class ControllerExtensionPaymentMonri extends Controller {
             $data['payment_monri_status'] = $this->config->get('payment_monri_status');
         }
 
-        // Monri Key
+        // Monri Merchant Key
         if (isset($this->request->post['payment_monri_merchant_key'])) {
             $data['payment_monri_merchant_key'] = $this->request->post['payment_monri_merchant_key'];
         } else {
             $data['payment_monri_merchant_key'] = $this->config->get('payment_monri_merchant_key');
         }
 
-        // Error poruka monri key
+        // Error poruka Monri Merchant Key
         if (isset($this->error['payment_monri_merchant_key'])) {
             $data['error_payment_monri_merchant_key'] = $this->error['payment_monri_merchant_key'];
         } else {
@@ -127,7 +127,7 @@ class ControllerExtensionPaymentMonri extends Controller {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
-        // Monri Key
+        // Monri Merchant Key
         if (!$this->request->post['payment_monri_merchant_key']) {
             $this->error['payment_monri_merchant_key'] = $this->language->get('error_payment_monri_merchant_key');
         }
