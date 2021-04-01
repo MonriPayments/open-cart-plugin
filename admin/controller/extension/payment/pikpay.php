@@ -97,13 +97,6 @@ class ControllerExtensionPaymentMonri extends Controller {
             $data['error_secret_key'] = '';
         }
 
-        // Monri payment processor
-        if (isset($this->request->post['payment_monri_processor'])) {
-            $data['payment_monri_processor'] = $this->request->post['payment_monri_processor'];
-        } else {
-            $data['payment_monri_processor'] = $this->config->get('payment_monri_processor');
-        }
-
         // Monri transaction type
         if (isset($this->request->post['payment_monri_transaction_type'])) {
             $data['payment_monri_transaction_type'] = $this->request->post['payment_monri_transaction_type'];
@@ -174,7 +167,6 @@ class ControllerExtensionPaymentMonri extends Controller {
         $data['monri_key']               = $this->config->get('payment_monri_key');
         $data['monri_secret_key']        = $this->config->get('payment_monri_secret_key');
         $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
-        $data['monri_processor']         = $this->config->get('payment_monri_processor');
 
         if($data['test_mode'])
         {

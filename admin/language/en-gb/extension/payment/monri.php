@@ -31,10 +31,6 @@ $_['entry_fail_url']    = 'Fail URL';
 $_['payment_monri_transaction_purchase']  = 'Purchase';
 $_['payment_monri_transaction_authorize'] = 'Authorize';
 
-// Vreijednosti polja processor
-$_['payment_monri_processor_hr']  = 'monri.com';
-$_['payment_monri_processor_ba']  = 'monri.com';
-
 // Palceholder
 $_['payment_monri_palceholder_key']        = 'Set Key';
 $_['payment_monri_palceholder_secret_key'] = 'Set Secret Key';

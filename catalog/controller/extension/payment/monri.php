@@ -20,7 +20,6 @@ class ControllerExtensionPaymentMonri extends Controller
         $data['monri_key'] = $this->config->get('payment_monri_key');
         $data['monri_secret_key'] = $this->config->get('payment_monri_secret_key');
         $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
-        $data['monri_processor'] = $this->config->get('payment_monri_processor');
         $data['monri_language'] = $this->config->get('payment_monri_language');
         $data['monri_transaction_type'] = $this->config->get('payment_monri_transaction_type');
 
@@ -134,15 +133,7 @@ class ControllerExtensionPaymentMonri extends Controller
 
         }
 
-        $data['monri_processor'] = $this->config->get('payment_monri_processor');
-
-        if ($data['monri_processor'] == "monri") {
-            $digest_shop = $this->digestUpdateV1($monri_key, $order_number);
-        } else {
-
-            $digest_shop = $this->digestUpdateV2($monri_key, $get_data);
-        }
-
+        $digest_shop = $this->digestUpdateV2($monri_key, $get_data);
 
         if ($digest_shop == $digest_monri) {
             if ($data['monri_transaction_type'] == 'authorize') {
@@ -218,13 +209,6 @@ class ControllerExtensionPaymentMonri extends Controller
     public function digestV2($key, $order_number, $amount, $currency)
     {
         $digest = hash('sha512', $key . $order_number . $amount . $currency);
-        return $digest;
-    }
-
-    // Računanje digesta za update narudžbe form V1
-    public function digestUpdateV1($key, $order_number)
-    {
-        $digest = SHA1($key . $order_number);
         return $digest;
     }
 
