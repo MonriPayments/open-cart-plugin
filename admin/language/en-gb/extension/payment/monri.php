@@ -15,8 +15,8 @@ $_['back_orders']		         = 'Orders';
 // Polja administracije
 $_['entry_test']		         = 'Test Mode';
 $_['entry_status']		         = 'Status';
-$_['entry_profile_id']		     = 'Monri key';
-$_['entry_secret_key']		     = 'Authenticity token';
+$_['entry_merchant_key']		     = 'Monri key';
+$_['entry_authenticity_token']		     = 'Authenticity token';
 $_['entry_processing_method']    = 'Processing method';
 $_['entry_payment_processor']    = 'Payment processor';
 $_['entry_language']             = 'Language';
@@ -32,15 +32,15 @@ $_['payment_monri_transaction_purchase']  = 'Purchase';
 $_['payment_monri_transaction_authorize'] = 'Authorize';
 
 // Palceholder
-$_['payment_monri_palceholder_key']        = 'Set Key';
-$_['payment_monri_palceholder_secret_key'] = 'Set Secret Key';
+$_['payment_monri_placeholder_authenticity_token']        = 'Set Authenticity Token';
+$_['payment_monri_placeholder_merchant_key'] = 'Set Merchant Key';
 
 // Help
-$_['help_monri_key']        = 'Set Monri key';
-$_['help_monri_secret_key'] = 'Set Authenticity token';
+$_['help_monri_merchant_key']        = 'Set Merchant Key';
+$_['help_monri_authenticity_token'] = 'Set Authenticity Token';
 
 // Error
 $_['error_permission']	        = 'Warning: You do not have permission to modify Monri Payment!';
-$_['error_payment_monri_key']	= 'Monri key Required!';
+$_['error_payment_monri_merchant_key']	= 'Monri key Required!';
 $_['error_secret_key']		    = 'Secret key Required!';
 

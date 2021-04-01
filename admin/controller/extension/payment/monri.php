@@ -61,24 +61,24 @@ class ControllerExtensionPaymentMonri extends Controller {
         }
 
         // Monri Key
-        if (isset($this->request->post['payment_monri_key'])) {
-            $data['payment_monri_key'] = $this->request->post['payment_monri_key'];
+        if (isset($this->request->post['payment_monri_merchant_key'])) {
+            $data['payment_monri_merchant_key'] = $this->request->post['payment_monri_merchant_key'];
         } else {
-            $data['payment_monri_key'] = $this->config->get('payment_monri_key');
+            $data['payment_monri_merchant_key'] = $this->config->get('payment_monri_merchant_key');
         }
 
         // Error poruka monri key
-        if (isset($this->error['payment_monri_key'])) {
-            $data['error_payment_monri_key'] = $this->error['payment_monri_key'];
+        if (isset($this->error['payment_monri_merchant_key'])) {
+            $data['error_payment_monri_merchant_key'] = $this->error['payment_monri_merchant_key'];
         } else {
-            $data['error_payment_monri_key'] = '';
+            $data['error_payment_monri_merchant_key'] = '';
         }
 
         // Monri secret key
-        if (isset($this->request->post['payment_monri_secret_key'])) {
-            $data['payment_monri_secret_key'] = $this->request->post['payment_monri_secret_key'];
+        if (isset($this->request->post['payment_monri_authenticity_token'])) {
+            $data['payment_monri_authenticity_token'] = $this->request->post['payment_monri_authenticity_token'];
         } else {
-            $data['payment_monri_secret_key'] = $this->config->get('payment_monri_secret_key');
+            $data['payment_monri_authenticity_token'] = $this->config->get('payment_monri_authenticity_token');
         }
 
         // Error poruka secret key
@@ -128,12 +128,12 @@ class ControllerExtensionPaymentMonri extends Controller {
         }
 
         // Monri Key
-        if (!$this->request->post['payment_monri_key']) {
-            $this->error['payment_monri_key'] = $this->language->get('error_payment_monri_key');
+        if (!$this->request->post['payment_monri_merchant_key']) {
+            $this->error['payment_monri_merchant_key'] = $this->language->get('error_payment_monri_merchant_key');
         }
 
         // Monri secret key
-        if (!$this->request->post['payment_monri_secret_key']) {
+        if (!$this->request->post['payment_monri_authenticity_token']) {
             $this->error['secret_key'] = $this->language->get('error_secret_key');
         }
 
@@ -153,8 +153,8 @@ class ControllerExtensionPaymentMonri extends Controller {
         $data['header'] = $this->load->controller('common/header');
 
         $data['test_mode']                = $this->config->get('payment_monri_test'); //Podaci iz administracije
-        $data['monri_key']               = $this->config->get('payment_monri_key');
-        $data['monri_secret_key']        = $this->config->get('payment_monri_secret_key');
+        $data['monri_key']               = $this->config->get('payment_monri_merchant_key');
+        $data['monri_secret_key']        = $this->config->get('payment_monri_authenticity_token');
         $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
 
         if($data['test_mode'])
@@ -171,9 +171,9 @@ class ControllerExtensionPaymentMonri extends Controller {
         $data["order_number"] = $this->request->get['order_id'];
         $data["amount"]       = $order_info["total"]*100;
         $data["currency"]     = $order_info["currency_code"];
-        $data["authenticity_token"] = $this->config->get('payment_monri_secret_key');
+        $data["authenticity_token"] = $this->config->get('payment_monri_authenticity_token');
 
-        $monri_key = $this->config->get('payment_monri_key');
+        $monri_key = $this->config->get('payment_monri_merchant_key');
         $data["digest"] = $this->digest($monri_key, $data["order_number"], $data['amount'], $data["currency"]);
 
         $xml = $this->generateXml($data);

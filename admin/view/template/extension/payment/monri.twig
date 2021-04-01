@@ -67,22 +67,22 @@
                         </div>
                     </div>
 
-                    <!-- Input Monri key -->
+                    <!-- Input Monri Merchant Key -->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-monri-key"><span data-toggle="tooltip" title="{{ help_monri_key }}">{{ entry_profile_id }}</span></label>
+                        <label class="col-sm-2 control-label" for="input-monri-key"><span data-toggle="tooltip" title="{{ help_monri_merchant_key }}">{{ entry_merchant_key }}</span></label>
                         <div class="col-sm-10">
-                            <input type="text" name="payment_monri_key" value="{{ payment_monri_key }}" placeholder="{{ payment_monri_palceholder_key }}" id="input-monri-key" class="form-control" />
-                            {% if error_payment_monri_key %}
-                                <div class="text-danger">{{ error_payment_monri_key }}</div>
+                            <input type="text" name="payment_monri_merchant_key" value="{{ payment_monri_merchant_key }}" placeholder="{{ payment_monri_placeholder_merchant_key }}" id="input-monri-key" class="form-control" />
+                            {% if error_payment_monri_merchant_key %}
+                                <div class="text-danger">{{ error_payment_monri_merchant_key }}</div>
                             {% endif %}
                         </div>
                     </div>
 
-                    <!-- Input Monri Secret Key -->
+                    <!-- Input Monri Authentication Token -->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-secret-key"><span data-toggle="tooltip" title="{{ help_monri_secret_key }}">{{ entry_secret_key }}</span></label>
+                        <label class="col-sm-2 control-label" for="input-secret-key"><span data-toggle="tooltip" title="{{ help_monri_authenticity_token }}">{{ entry_authenticity_token }}</span></label>
                         <div class="col-sm-10">
-                            <input type="text" name="payment_monri_secret_key" value="{{ payment_monri_secret_key }}" placeholder="{{ payment_monri_palceholder_secret_key }}" id="input-secret-key" class="form-control" />
+                            <input type="text" name="payment_monri_authenticity_token" value="{{ payment_monri_authenticity_token }}" placeholder="{{ payment_monri_placeholder_authenticity_token }}" id="input-secret-key" class="form-control" />
                             {% if error_secret_key %}
                                 <div class="text-danger">{{ error_secret_key }}</div>
                             {% endif %}

@@ -17,8 +17,8 @@ class ControllerExtensionPaymentMonri extends Controller
         parent::__construct($registry);
 
         $data['test_mode'] = $this->config->get('payment_monri_test');
-        $data['monri_key'] = $this->config->get('payment_monri_key');
-        $data['monri_secret_key'] = $this->config->get('payment_monri_secret_key');
+        $data['monri_key'] = $this->config->get('payment_monri_merchant_key');
+        $data['monri_secret_key'] = $this->config->get('payment_monri_authenticity_token');
         $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
         $data['monri_language'] = $this->config->get('payment_monri_language');
         $data['monri_transaction_type'] = $this->config->get('payment_monri_transaction_type');
@@ -39,10 +39,10 @@ class ControllerExtensionPaymentMonri extends Controller
         $data['ch_email'] = $order_info['email'];
         $data['currency'] = $order_info['currency_code'];
         $data['language'] = $this->config->get('payment_monri_language');
-        $data['authenticity_token'] = $this->config->get('payment_monri_secret_key');
+        $data['authenticity_token'] = $this->config->get('payment_monri_authenticity_token');
         $data['order_description'] = $data['order_number'] . " - " . date('d.m.Y H:i');
 
-        $monriKey = $this->config->get('payment_monri_key');
+        $monriKey = $this->config->get('payment_monri_merchant_key');
 
         $data['digest'] = $this->digestV2($monriKey, $data['order_number'], $data['amount'], $data['currency']);
 
@@ -111,7 +111,7 @@ class ControllerExtensionPaymentMonri extends Controller
             );
         }
 
-        $monri_key = $this->config->get('payment_monri_key');
+        $monri_key = $this->config->get('payment_monri_merchant_key');
         $digest_monri = $_REQUEST['digest'];
 
         if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
