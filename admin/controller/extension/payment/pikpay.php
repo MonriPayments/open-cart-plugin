@@ -1,4 +1,11 @@
 <?php
+
+/* Uncomment this comment block only in the case of catastrophic failure.
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+*/
+
 class ControllerExtensionPaymentMonri extends Controller {
     private $error = array();
 
@@ -52,6 +59,8 @@ class ControllerExtensionPaymentMonri extends Controller {
         } else {
             $data['payment_monri_test'] = $this->config->get('payment_monri_test');
         }
+
+        $data['payment_monri_test'] = true;
 
         // Status
         if (isset($this->request->post['payment_monri_status'])) {
@@ -111,8 +120,10 @@ class ControllerExtensionPaymentMonri extends Controller {
             $protocol = 'http://';
         }
 
-        $data['success_url'] = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI'])))) . "/extension/payment/monri/success"; //$protocol . $domain_name;
-        $data['fail_url']    = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI'])))) . "/extension/payment/monri/fail"; //$protocol . $domain_name;
+        $dirname = dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI']))));
+
+        $data['success_url'] = $protocol . $_SERVER['SERVER_NAME'] . $dirname . "/extension/payment/monri/success"; //$protocol . $domain_name;
+        $data['fail_url']    = $protocol . $_SERVER['SERVER_NAME'] . $dirname . "/extension/payment/monri/fail"; //$protocol . $domain_name;
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
@@ -159,10 +170,10 @@ class ControllerExtensionPaymentMonri extends Controller {
 
         if($data['test_mode'])
         {
-            $data['liveurl'] = 'https://ipgtest.monri.ba/transactions/';
+            $data['liveurl'] = 'https://ipgtest.monri.com/transactions/';
         }
         else{
-            $data['liveurl'] = 'https://ipg.monri.ba/transactions/';
+            $data['liveurl'] = 'https://ipg.monri.com/transactions/';
         }
 
         // Podaci ordera
@@ -228,7 +239,7 @@ class ControllerExtensionPaymentMonri extends Controller {
             $data['error']= "Message: " . $sendData;
         }
 
-        $data['link_orders_monri'] = $this->url->link('payment/order_monri', 'user_token=' . $this->session->data['user_token'], true);
+        $data['link_orders_monri'] = $this->url->link('sale/order_monri', 'user_token=' . $this->session->data['user_token'], true);
 
         // Load the template file and show output
         $this->response->setOutput($this->load->view('extension/payment/monri_xml_request', $data));

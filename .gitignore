@@ -1,2 +1,5 @@
 docker-data
+mariadb_data/
+opencart_data/
+opencart_storage_data/
 .DS_Store
