@@ -2,10 +2,62 @@
 
 class ControllerExtensionPaymentMonri extends Controller
 {
+    /**
+     * @var array $payload Payload to pass into view(s).
+     */
+    private $payload;
+
+    /**
+     * ControllerExtensionPaymentMonri constructor.
+     *
+     * @param $registry
+     */
+    public function __construct($registry)
+    {
+        parent::__construct($registry);
+
+        $data['test_mode'] = $this->config->get('payment_monri_test');
+        $data['monri_key'] = $this->config->get('payment_monri_merchant_key');
+        $data['monri_secret_key'] = $this->config->get('payment_monri_authenticity_token');
+        $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
+        $data['monri_language'] = $this->config->get('payment_monri_language');
+        $data['monri_transaction_type'] = $this->config->get('payment_monri_transaction_type');
+
+        $data['liveurl'] = $data['test_mode'] ? 'https://ipgtest.monri.com/v2/form' : 'https://ipg.monri.com/v2/form';
+
+        $this->load->model('checkout/order');
+        $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+
+        $data['order_number'] = $this->session->data['order_id'];
+        $data['amount'] = $order_info['total'] * 100;
+        $data['ch_full_name'] = $order_info['payment_firstname'] . " " . $order_info['payment_lastname'];
+        $data['ch_address'] = $order_info['payment_address_1'];
+        $data['ch_city'] = $order_info['payment_city'];
+        $data['ch_zip'] = $order_info['payment_postcode'];
+        $data['ch_country'] = $order_info['payment_country'];
+        $data['ch_phone'] = $order_info['telephone'];
+        $data['ch_email'] = $order_info['email'];
+        $data['currency'] = $order_info['currency_code'];
+        $data['language'] = $this->config->get('payment_monri_language');
+        $data['authenticity_token'] = $this->config->get('payment_monri_authenticity_token');
+        $data['order_description'] = $data['order_number'] . " - " . date('d.m.Y H:i');
+
+        $monriKey = $this->config->get('payment_monri_merchant_key');
+
+        $data['digest'] = $this->digestV2($monriKey, $data['order_number'], $data['amount'], $data['currency']);
+
+        if ($data['language'] === 'ba') {
+            $data['language'] = 'hr';
+        }
+
+        $this->payload = $data;
+    }
 
     public function index()
     {
+        $data = $this->payload;
         $data['button_confirm'] = $this->language->get('button_confirm');
+
         return $this->load->view('extension/payment/monri', $data);
     }
 
@@ -36,68 +88,7 @@ class ControllerExtensionPaymentMonri extends Controller
         $data['footer'] = $this->load->controller('common/footer');
         $data['header'] = $this->load->controller('common/header');
 
-        $data['test_mode']                = $this->config->get('payment_monri_test'); //Podaci iz administracije
-        $data['monri_key']               = $this->config->get('payment_monri_key');
-        $data['monri_secret_key']        = $this->config->get('payment_monri_secret_key');
-        $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
-        $data['monri_processor']         = $this->config->get('payment_monri_processor');
-        $data['monri_language']          = $this->config->get('payment_monri_language');
-        $data['monri_transaction_type']  = $this->config->get('payment_monri_transaction_type');
-
-        //Linkovi za formu
-        if($data['monri_processor'] == "monri")
-        {
-            if($data['test_mode'])
-            {
-                $data['liveurl'] = 'https://ipgtest.monri.ba/form';
-            }
-            else{
-                $data['liveurl'] = 'https://ipg.monri.ba/form';
-            }
-        }
-        else{
-            if($data['test_mode'])
-            {
-                $data['liveurl'] = 'https://ipgtest.webteh.hr/v2/form';
-            }
-            else{
-                $data['liveurl'] = 'https://ipg.webteh.hr/v2/form';
-            }
-        }
-
-        // Order data
-        $this->load->model('checkout/order');
-        $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-
-
-        $data["order_number"] = $this->session->data["order_id"];
-        $data["amount"]       = $order_info["total"]*100;
-        $data["ch_full_name"] = $order_info["payment_firstname"] . " " . $order_info["payment_lastname"];
-        $data["ch_address"]   = $order_info["payment_address_1"];
-        $data["ch_city"]      = $order_info["payment_city"];
-        $data["ch_zip"]       = $order_info["payment_postcode"];
-        $data["ch_country"]   = $order_info["payment_country"];
-        $data["ch_phone"]     = $order_info["telephone"];
-        $data["ch_email"]     = $order_info["email"];
-        $data["currency"]     = $order_info["currency_code"];
-        $data["language"]     = $this->config->get('payment_monri_language');
-        $data["authenticity_token"] = $this->config->get('payment_monri_secret_key');
-        $data['order_description'] = $data["order_number"] . " - " . date('d.m.Y H:i');
-
-        $monri_key = $this->config->get('payment_monri_key');
-        if($data['monri_processor'] == "monri")
-        {
-            $data["digest"] = $this->digestV1($monri_key, $data["order_number"], $data['amount'], $data["currency"]);
-        }else{
-            $data["digest"] = $this->digestV2($monri_key, $data["order_number"], $data['amount'], $data["currency"]);
-        }
-
-
-
-        if($data["language"] == 'ba')
-        {
-            $data["language"] = 'hr';
-        }
+        $data += $this->payload;
 
         // Load the template file and show output
         $this->response->setOutput($this->load->view('extension/payment/monri_form_1', $data));
@@ -110,19 +101,22 @@ class ControllerExtensionPaymentMonri extends Controller
     {
         $this->load->language('extension/payment/monri'); //File language
         $this->load->model('checkout/order');
-        $data['monri_transaction_type']  = $this->config->get('payment_monri_transaction_type');
-        $order_number = $_REQUEST['order_number'];
+        $data['monri_transaction_type'] = $this->config->get('payment_monri_transaction_type');
+        $order_number = $_REQUEST['order_number'] ?? null;
         $data['order_id'] = (int)$order_number;
 
-        $monri_key = $this->config->get('payment_monri_key');
+        if(!$order_number) {
+            return $this->response->redirect(
+                $this->url->link('common/home')
+            );
+        }
+
+        $monri_key = $this->config->get('payment_monri_merchant_key');
         $digest_monri = $_REQUEST['digest'];
 
-
-        if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
-        {
+        if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
             $protocol = 'https://';
-        }
-        else {
+        } else {
             $protocol = 'http://';
         }
 
@@ -130,44 +124,31 @@ class ControllerExtensionPaymentMonri extends Controller
         $params = $_GET;
         $get_data = $success_url . "/success";
         $split = "?";
-        foreach ($params as $key => $value)
-        {
+        foreach ($params as $key => $value) {
             $value2 = str_replace(' ', '+', $value);
-            if($key != "digest" && $key != "route")
-            {
+            if ($key != "digest" && $key != "route") {
                 $get_data .= $split . $key . "=" . $value2;
                 $split = "&";
             }
 
         }
 
-        $data['monri_processor'] = $this->config->get('payment_monri_processor');
+        $digest_shop = $this->digestUpdateV2($monri_key, $get_data);
 
-        if($data['monri_processor'] == "monri")
-        {
-            $digest_shop   = $this->digestUpdateV1($monri_key, $order_number);
-        }else{
-
-            $digest_shop   = $this->digestUpdateV2($monri_key, $get_data);
-        }
-
-
-        if($digest_shop == $digest_monri)
-        {
-            if($data['monri_transaction_type'] == 'authorize')
-            {
+        if ($digest_shop == $digest_monri) {
+            if ($data['monri_transaction_type'] == 'authorize') {
                 $data['order_status'] = 1; //Status pending
-            }else{
+            } else {
                 $data['order_status'] = 5; //Status complete
             }
 
             $data['comment'] = $this->language->get('text_success_message');
-            $this->model_checkout_order->addOrderHistory($data['order_id'],  $data['order_status'], $data['comment'], true, false);
+            $this->model_checkout_order->addOrderHistory($data['order_id'], $data['order_status'], $data['comment'], true, false);
             $this->response->redirect($this->url->link('checkout/success'));
-        }else{
+        } else {
             $data['order_status'] = 10; //Status failed
             $data['comment'] = $this->language->get('text_error_message');
-            $this->model_checkout_order->addOrderHistory($data['order_id'],  $data['order_status'], $data['comment'], true, false);
+            $this->model_checkout_order->addOrderHistory($data['order_id'], $data['order_status'], $data['comment'], true, false);
             $this->response->redirect($this->url->link('checkout/failure'));
         }
     }
@@ -179,11 +160,17 @@ class ControllerExtensionPaymentMonri extends Controller
     {
         $this->load->language('extension/payment/monri'); //File language
         $this->load->model('checkout/order');
-        $order_id1 = $_REQUEST['order_number'];
-        $data['order_id'] = (int)$order_id1;
+        $order_id = $_REQUEST['order_number'] ?? null;
+        $data['order_id'] = (int)$order_id;
+
+        if(!$order_id) {
+            return $this->response->redirect(
+                $this->url->link('common/home')
+            );
+        }
 
         $data['order_status'] = 7; //Status canceled
-        $this->model_checkout_order->addOrderHistory($data['order_id'],  $data['order_status'], true, false);
+        $this->model_checkout_order->addOrderHistory($data['order_id'], $data['order_status'], true, false);
         $this->document->setTitle($this->language->get('heading_title_fail'));
         $data['breadcrumbs'] = array();
 
@@ -211,32 +198,24 @@ class ControllerExtensionPaymentMonri extends Controller
     }
 
 
-
     // Računanje digesta za slanje podataka form V1
     public function digestV1($key, $order_number, $amount, $currency)
     {
-        $digest = SHA1($key.$order_number.$amount.$currency);
+        $digest = SHA1($key . $order_number . $amount . $currency);
         return $digest;
     }
 
     // Računanje digesta za slanje podataka form V2
     public function digestV2($key, $order_number, $amount, $currency)
     {
-        $digest = hash('sha512', $key.$order_number.$amount.$currency);
-        return $digest;
-    }
-
-    // Računanje digesta za update narudžbe form V1
-    public function digestUpdateV1($key, $order_number)
-    {
-        $digest = SHA1($key.$order_number);
+        $digest = hash('sha512', $key . $order_number . $amount . $currency);
         return $digest;
     }
 
     // Računanje digesta za update narudžbe form V2
     public function digestUpdateV2($key, $url)
     {
-        $digest = hash('sha512', $key.$url);
+        $digest = hash('sha512', $key . $url);
         return $digest;
     }
 

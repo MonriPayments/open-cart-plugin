@@ -31,20 +31,20 @@
                         <label class="col-sm-2 control-label">{{ entry_test }}</label>
                         <div class="col-sm-10">
                             <label class="radio-inline">
-                                {% if payment_pikpay_test %}
-                                    <input type="radio" name="payment_pikpay_test" value="1" checked="checked" />
+                                {% if payment_monri_test %}
+                                    <input type="radio" name="payment_monri_test" value="1" checked="checked" />
                                     {{ text_yes }}
                                 {% else %}
-                                    <input type="radio" name="payment_pikpay_test" value="1" />
+                                    <input type="radio" name="payment_monri_test" value="1" />
                                     {{ text_yes }}
                                 {% endif %}
                             </label>
                             <label class="radio-inline">
-                                {% if not payment_pikpay_test %}
-                                    <input type="radio" name="payment_pikpay_test" value="0" checked="checked" />
+                                {% if not payment_monri_test %}
+                                    <input type="radio" name="payment_monri_test" value="0" checked="checked" />
                                     {{ text_no }}
                                 {% else %}
-                                    <input type="radio" name="payment_pikpay_test" value="0" />
+                                    <input type="radio" name="payment_monri_test" value="0" />
                                     {{ text_no }}
                                 {% endif %}
                             </label>
@@ -55,8 +55,8 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
                         <div class="col-sm-10">
-                            <select name="payment_pikpay_status" id="input-status" class="form-control">
-                                {% if payment_pikpay_status %}
+                            <select name="payment_monri_status" id="input-status" class="form-control">
+                                {% if payment_monri_status %}
                                     <option value="1" selected="selected">{{ text_enabled }}</option>
                                     <option value="0">{{ text_disabled }}</option>
                                 {% else %}
@@ -67,41 +67,25 @@
                         </div>
                     </div>
 
-                    <!-- Input PikPay key -->
+                    <!-- Input Monri Merchant Key -->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-pikpay-key"><span data-toggle="tooltip" title="{{ help_pikpay_key }}">{{ entry_profile_id }}</span></label>
+                        <label class="col-sm-2 control-label" for="input-monri-key"><span data-toggle="tooltip" title="{{ help_monri_merchant_key }}">{{ entry_merchant_key }}</span></label>
                         <div class="col-sm-10">
-                            <input type="text" name="payment_pikpay_key" value="{{ payment_pikpay_key }}" placeholder="{{ payment_pikpay_palceholder_key }}" id="input-pikpay-key" class="form-control" />
-                            {% if error_payment_pikpay_key %}
-                                <div class="text-danger">{{ error_payment_pikpay_key }}</div>
+                            <input type="text" name="payment_monri_merchant_key" value="{{ payment_monri_merchant_key }}" placeholder="{{ payment_monri_placeholder_merchant_key }}" id="input-monri-key" class="form-control" />
+                            {% if error_payment_monri_merchant_key %}
+                                <div class="text-danger">{{ error_payment_monri_merchant_key }}</div>
                             {% endif %}
                         </div>
                     </div>
 
-                    <!-- Input PikPay Secret Key -->
+                    <!-- Input Monri Authentication Token -->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-secret-key"><span data-toggle="tooltip" title="{{ help_pikpay_secret_key }}">{{ entry_secret_key }}</span></label>
+                        <label class="col-sm-2 control-label" for="input-secret-key"><span data-toggle="tooltip" title="{{ help_monri_authenticity_token }}">{{ entry_authenticity_token }}</span></label>
                         <div class="col-sm-10">
-                            <input type="text" name="payment_pikpay_secret_key" value="{{ payment_pikpay_secret_key }}" placeholder="{{ payment_pikpay_palceholder_secret_key }}" id="input-secret-key" class="form-control" />
+                            <input type="text" name="payment_monri_authenticity_token" value="{{ payment_monri_authenticity_token }}" placeholder="{{ payment_monri_placeholder_authenticity_token }}" id="input-secret-key" class="form-control" />
                             {% if error_secret_key %}
                                 <div class="text-danger">{{ error_secret_key }}</div>
                             {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- Input payment processor -->
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-status">{{ entry_payment_processor }}</label>
-                        <div class="col-sm-10">
-                            <select name="payment_pikpay_processor" id="input-pikpay-processor" class="form-control">
-                                {% if payment_pikpay_processor == 'webteh' %}
-                                    <option value="webteh" selected="selected">{{ payment_pikpay_processor_hr }}</option>
-                                    <option value="pikpay">{{ payment_pikpay_processor_ba }}</option>
-                                {% else %}
-                                    <option value="webteh">{{ payment_pikpay_processor_hr }}</option>
-                                    <option value="pikpay" selected="selected">{{ payment_pikpay_processor_ba }}</option>
-                                {% endif %}
-                            </select>
                         </div>
                     </div>
 
@@ -109,13 +93,13 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-transaction-type">{{ entry_payment_transaction_type }}</label>
                         <div class="col-sm-10">
-                            <select name="payment_pikpay_transaction_type" id="input-pikpay-transaction-type" class="form-control">
-                                {% if payment_pikpay_transaction_type == 'purchase' %}
-                                    <option value="purchase" selected="selected">{{ payment_pikpay_transaction_purchase }}</option>
-                                    <option value="authorize">{{ payment_pikpay_transaction_authorize }}</option>
+                            <select name="payment_monri_transaction_type" id="input-monri-transaction-type" class="form-control">
+                                {% if payment_monri_transaction_type == 'purchase' %}
+                                    <option value="purchase" selected="selected">{{ payment_monri_transaction_purchase }}</option>
+                                    <option value="authorize">{{ payment_monri_transaction_authorize }}</option>
                                 {% else %}
-                                    <option value="purchase">{{ payment_pikpay_transaction_purchase }}</option>
-                                    <option value="authorize" selected="selected">{{ payment_pikpay_transaction_authorize }}</option>
+                                    <option value="purchase">{{ payment_monri_transaction_purchase }}</option>
+                                    <option value="authorize" selected="selected">{{ payment_monri_transaction_authorize }}</option>
                                 {% endif %}
                             </select>
                         </div>
@@ -125,12 +109,12 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-language">{{ entry_language }}</label>
                         <div class="col-sm-10">
-                            <select name="payment_pikpay_language" id="input-pikpay-language" class="form-control">
-                                {% if payment_pikpay_language == 'en' %}
+                            <select name="payment_monri_language" id="input-monri-language" class="form-control">
+                                {% if payment_monri_language == 'en' %}
                                     <option value="en" selected="selected">{{ entry_language_en }}</option>
                                     <option value="hr">{{ entry_language_hr }}</option>
                                     <option value="ba">{{ entry_language_ba }}</option>
-                                {% elseif payment_pikpay_language == 'hr' %}
+                                {% elseif payment_monri_language == 'hr' %}
                                     <option value="en">{{ entry_language_en }}</option>
                                     <option value="hr" selected="selected">{{ entry_language_hr }}</option>
                                     <option value="ba">{{ entry_language_ba }}</option>
@@ -147,21 +131,21 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-language"></label>
                         <div class="col-sm-10">
-                           <h4><b>"Success URL" and "Fail URL" copy to PikPay API settings.</b></h4>
+                            <h4><b>"Success URL" and "Fail URL" copy to Monri API settings.</b></h4>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-language">{{ entry_success_url }}</label>
                         <div class="col-sm-10">
-                            <input type="text" name="payment_pikpay_success_url" value="{{ success_url }}" id="input-success-url" class="form-control" readonly/>
+                            <input type="text" name="payment_monri_success_url" value="{{ success_url }}" id="input-success-url" class="form-control" readonly/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-language">{{ entry_fail_url }}</label>
                         <div class="col-sm-10">
-                            <input type="reado" name="payment_pikpay_success_url" value="{{ fail_url }}" id="input-success-url" class="form-control" readonly/>
+                            <input type="reado" name="payment_monri_success_url" value="{{ fail_url }}" id="input-success-url" class="form-control" readonly/>
                         </div>
                     </div>
 
