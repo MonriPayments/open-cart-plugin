@@ -24,6 +24,7 @@ $_['entry_language_en']          = 'English';
 $_['entry_language_hr']          = 'Hrvatski';
 $_['entry_language_ba']          = 'Bosanski';
 $_['entry_payment_transaction_type'] = 'Transaction type';
+$_['entry_callback_url'] = 'Callback URL';
 $_['entry_success_url'] = 'Success URL';
 $_['entry_fail_url']    = 'Fail URL';
 

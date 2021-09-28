@@ -16,6 +16,10 @@ class ControllerExtensionPaymentMonri extends Controller
     {
         parent::__construct($registry);
 
+        if($this->request->get['route'] === 'extension/payment/monri/callback') {
+            return;
+        }
+
         $data['test_mode'] = $this->config->get('payment_monri_test');
         $data['monri_key'] = $this->config->get('payment_monri_merchant_key');
         $data['monri_secret_key'] = $this->config->get('payment_monri_authenticity_token');
@@ -130,7 +134,6 @@ class ControllerExtensionPaymentMonri extends Controller
                 $get_data .= $split . $key . "=" . $value2;
                 $split = "&";
             }
-
         }
 
         $digest_shop = $this->digestUpdateV2($monri_key, $get_data);
@@ -195,6 +198,32 @@ class ControllerExtensionPaymentMonri extends Controller
          * Set custom output
          */
         $this->response->setOutput($this->load->view('common/monri_cancel_message', $data));
+    }
+
+    public function callback()
+    {
+        define('MONRI_CALLBACK_IMPL', true);
+        require_once 'callback-url.php';
+
+        $merchant_key = $this->config->get('payment_monri_merchant_key');
+
+        if(!$merchant_key) {
+            monri_error('Monri key is not defined or does not exist.', array(404, 'Not Found'));
+        }
+
+        $directory = dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI']))));
+        $pathname = $directory . '/extension/payment/monri/callback';
+
+        monri_handle_callback($pathname, $merchant_key, function($payload) {
+            $order_number = $payload['order_number'];
+            $transaction_type = $this->config->get('payment_monri_transaction_type');
+
+            $status = $transaction_type === 'authorize' ? 1 : 5;
+
+            $this->model_checkout_order->addOrderHistory(
+                $order_number, $status, $this->language->get('text_success_message'), true, false
+            );
+        });
     }
 
 
