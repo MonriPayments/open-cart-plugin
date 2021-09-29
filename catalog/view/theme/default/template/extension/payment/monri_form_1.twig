@@ -37,6 +37,18 @@
                 <input type="hidden" name="authenticity_token" value="{{ authenticity_token }}"><br>
                 <input type="hidden" name="digest" value="{{ digest }}"><br>
 
+                {% if success_url_override %}
+                    <input type="hidden" name="success_url_override" value="{{ success_url_override }}"><br>
+                {% endif %}
+
+                {% if cancel_url_override %}
+                    <input type="hidden" name="cancel_url_override" value="{{ cancel_url_override }}"><br>
+                {% endif %}
+
+                {% if callback_url_override %}
+                    <input type="hidden" name="callback_url_override" value="{{ callback_url_override }}"><br>
+                {% endif %}
+
             </form>
 
             {{ content_bottom }}</div>

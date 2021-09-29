@@ -127,6 +127,37 @@
                         </div>
                     </div>
 
+                    <!-- Overrides  -->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-language"></label>
+                        <div class="col-sm-10">
+                            <h4>Overridable URLs</h4>
+
+                            Here you can define your URLs for <strong>success, cancel &amp; callback</strong> events. Use <strong>HTTPS</strong> for this functionality.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-success-url-override">{{ entry_success_url_override }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_monri_success_url_override" value="{{ success_url_override }}" id="input-success-url-override" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-cancel-url-override">{{ entry_cancel_url_override }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_monri_cancel_url_override" value="{{ cancel_url_override }}" id="input-cancel-url-override" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-callback-url-override">{{ entry_callback_url_override }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_monri_callback_url_override" value="{{ callback_url_override }}" id="input-callback-url-override" class="form-control"/>
+                        </div>
+                    </div>
+
                     <!-- Success i Fail linkovi  -->
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-language"></label>
