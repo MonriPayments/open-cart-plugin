@@ -42,9 +42,9 @@ class ControllerExtensionPaymentMonri extends Controller
         $data['authenticity_token'] = $this->config->get('payment_monri_authenticity_token');
         $data['order_description'] = $data['order_number'] . " - " . date('d.m.Y H:i');
 
-        $data['success_url_override'] = rawurlencode($this->config->get('payment_monri_success_url_override'));
-        $data['cancel_url_override'] = rawurlencode($this->config->get('payment_monri_cancel_url_override'));
-        $data['callback_url_override'] = rawurlencode($this->config->get('payment_monri_callback_url_override'));
+        $data['success_url_override'] = $this->config->get('payment_monri_success_url_override');
+        $data['cancel_url_override'] = $this->config->get('payment_monri_cancel_url_override');
+        $data['callback_url_override'] = $this->config->get('payment_monri_callback_url_override');
 
         $monriKey = $this->config->get('payment_monri_merchant_key');
 
