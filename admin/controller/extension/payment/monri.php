@@ -12,6 +12,10 @@ class ControllerExtensionPaymentMonri extends Controller {
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
             $this->model_setting_setting->editSetting('payment_monri', $this->request->post);
 
+            #echo '<pre>';
+            #print_r($this->request->post);
+            #die;
+
             $this->session->data['success'] = $this->language->get('text_success');
 
             $this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true));
@@ -114,6 +118,27 @@ class ControllerExtensionPaymentMonri extends Controller {
         $data['success_url'] = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI'])))) . "/extension/payment/monri/success"; //$protocol . $domain_name;
         $data['fail_url']    = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI'])))) . "/extension/payment/monri/fail"; //$protocol . $domain_name;
 
+        // Success URL Override
+        if (isset($this->request->post['payment_monri_success_url_override'])) {
+            $data['success_url_override'] = $this->request->post['payment_monri_success_url_override'];
+        } else {
+            $data['success_url_override'] = $this->config->get('payment_monri_success_url_override');
+        }
+
+        // Cancel URL Override
+        if (isset($this->request->post['payment_monri_cancel_url_override'])) {
+            $data['cancel_url_override'] = $this->request->post['payment_monri_cancel_url_override'];
+        } else {
+            $data['cancel_url_override'] = $this->config->get('payment_monri_cancel_url_override');
+        }
+
+        // Callback URL Override
+        if (isset($this->request->post['payment_monri_callback_url_override'])) {
+            $data['callback_url_override'] = $this->request->post['payment_monri_callback_url_override'];
+        } else {
+            $data['callback_url_override'] = $this->config->get('payment_monri_callback_url_override');
+        }
+
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
@@ -156,6 +181,8 @@ class ControllerExtensionPaymentMonri extends Controller {
         $data['monri_key']               = $this->config->get('payment_monri_merchant_key');
         $data['monri_secret_key']        = $this->config->get('payment_monri_authenticity_token');
         $data['monri_processing_method'] = $this->config->get('payment_monri_processing_method');
+
+        die('a');
 
         if($data['test_mode'])
         {

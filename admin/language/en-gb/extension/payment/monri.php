@@ -27,6 +27,10 @@ $_['entry_payment_transaction_type'] = 'Transaction type';
 $_['entry_success_url'] = 'Success URL';
 $_['entry_fail_url']    = 'Fail URL';
 
+$_['entry_success_url_override'] = 'Success URL Override';
+$_['entry_cancel_url_override'] = 'Cancel URL Override';
+$_['entry_callback_url_override'] = 'Callback URL Override';
+
 // Vrijenosti polja transaction type
 $_['payment_monri_transaction_purchase']  = 'Purchase';
 $_['payment_monri_transaction_authorize'] = 'Authorize';
