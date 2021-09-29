@@ -131,21 +131,50 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="input-language"></label>
                         <div class="col-sm-10">
-                            <h4><b>"Success URL" and "Fail URL" copy to Monri API settings.</b></h4>
+                            <h4>Callback, Success and Fail URLs which you shuold copy into Monri dashboard.</h4>
+
+                            <div class="alert alert-info" style="margin: 0;">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                Use SEO friendly URLs only when you have added:
+                                <code>RewriteRule ^extension/payment/monri/(.*) index.php?route=extension/payment/monri/$1 [L,QSA]</code>
+                                in your main <code>.htaccess</code> file.
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-language">{{ entry_success_url }}</label>
+                        <label class="col-sm-2 control-label" for="input-callback-url_direct">{{ entry_callback_url }}</label>
+                        <div class="col-sm-10" style="margin-bottom: 10px;">
+                            <input type="text" name="payment_monri_callback_url_direct" value="{{ callback_url_direct }}" id="input-callback-url_direct" class="form-control" readonly/>
+                        </div>
+
+                        <label class="col-sm-2 control-label" for="input-callback-url">{{ entry_callback_url }} (SEO friendly)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="payment_monri_callback_url" value="{{ callback_url }}" id="input-callback-url" class="form-control" readonly/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-success-url_direct">{{ entry_success_url }}</label>
+                        <div class="col-sm-10" style="margin-bottom: 10px;">
+                            <input type="text" name="payment_monri_success_url_direct" value="{{ success_url_direct }}" id="input-success-url_direct" class="form-control" readonly/>
+                        </div>
+
+                        <label class="col-sm-2 control-label" for="input-success-url">{{ entry_success_url }} (SEO friendly)</label>
                         <div class="col-sm-10">
                             <input type="text" name="payment_monri_success_url" value="{{ success_url }}" id="input-success-url" class="form-control" readonly/>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-language">{{ entry_fail_url }}</label>
+                        <label class="col-sm-2 control-label" for="input-fail-url_direct">{{ entry_fail_url }}</label>
+                        <div class="col-sm-10" style="margin-bottom: 10px;">
+                            <input type="text" name="payment_monri_fail_url_direct" value="{{ fail_url_direct }}" id="input-fail-url_direct" class="form-control" readonly/>
+                        </div>
+
+                        <label class="col-sm-2 control-label" for="input-fail-url">{{ entry_fail_url }} (SEO friendly)</label>
                         <div class="col-sm-10">
-                            <input type="reado" name="payment_monri_success_url" value="{{ fail_url }}" id="input-success-url" class="form-control" readonly/>
+                            <input type="reado" name="payment_monri_fail_url" value="{{ fail_url }}" id="input-fail-url" class="form-control" readonly/>
                         </div>
                     </div>
 
