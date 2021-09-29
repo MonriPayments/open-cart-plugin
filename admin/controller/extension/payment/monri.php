@@ -113,9 +113,19 @@ class ControllerExtensionPaymentMonri extends Controller {
 
         $base = $protocol . $_SERVER['SERVER_NAME'] . dirname(dirname(dirname(dirname($_SERVER['REQUEST_URI']))));
 
-        $data['callback_url'] = $base . '/extension/payment/monri/callback';
-        $data['success_url'] = $base . '/extension/payment/monri/success'; //$protocol . $domain_name;
-        $data['fail_url']    = $base . '/extension/payment/monri/fail'; //$protocol . $domain_name;
+        $endpoints = [
+            'callback' => 'extension/payment/monri/callback',
+            'success' => 'extension/payment/monri/success',
+            'fail' => 'extension/payment/monri/fail',
+        ];
+
+        $data['callback_url'] = $base . '/' . $endpoints['callback'];
+        $data['success_url'] = $base . '/' . $endpoints['success']; //$protocol . $domain_name;
+        $data['fail_url']    = $base . '/' . $endpoints['fail']; //$protocol . $domain_name;
+
+        $data['callback_url_direct'] = $base . '/index.php?route=' . $endpoints['callback'];
+        $data['success_url_direct'] = $base . '/index.php?route=' . $endpoints['success'];
+        $data['fail_url_direct'] = $base . '/index.php?route=' . $endpoints['fail'];
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
